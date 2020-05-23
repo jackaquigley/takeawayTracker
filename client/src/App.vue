@@ -1,23 +1,28 @@
 <template lang="html">
-  <div class="list">
-    <nav id="navStyle">
-      <p>Menu</p>
-    </nav>
+<div>
+  <nav id="navStyle">
+    <p>Menu</p>
+  </nav>
+
+  <div id="mainPageWrapper">
 
     <hr>
 
-    <span id="orderData">
+    <div id="orderData">
       <order-list :orders="orders"></order-list>
-    </span>
+    </div>
 
-    <span id="takeawayData">
+    <div id="takeawayData">
     <p>Takeaway Data</p>
-  </span>
-
-    <span id="newForms" >
-      <p>Form</p>
-    </span>
   </div>
+
+    <div id="newForms" >
+    <order-form></order-form>
+    </div>
+
+  </div>
+</div>
+</div>
 </template>
 
 <script>
@@ -25,17 +30,24 @@
 import {eventBus} from '@/main.js';
 import TakeawayService from './services/TakeawayService.js'
 import OrderList from './components/OrderList.vue';
+import OrderForm from './components/OrderForm.vue';
 
 
 export default {
   name: 'App',
 data() {
   return {
-    orders: []
+    orders: [],
+    takeaways: []
   };
 },
 mounted() {
   this.fetchOrders();
+
+  eventBus.$on('submit-order', payload => {
+    TakeawayService.postOrder(payload)
+    .then(order => this.orders.push(order))
+  })
 },
 methods: {
   fetchOrders() {
@@ -44,7 +56,7 @@ methods: {
   }
 },
 components: {
-  'order-list': OrderList
+  'order-list': OrderList, 'order-form': OrderForm
 }
 }
 
@@ -52,27 +64,26 @@ components: {
 
 <style lang="css" scoped>
 #newForms {
-  width: 30%;
-    padding-left: 15px;
-    margin-right: 15px;
+    width: 30%;
+    margin: 15px;
     text-align: center;
     float: right;
     background-color: lightgray;
+    float: left;
 }
 
 #takeawayData {
-  width: 65%;
-    padding-left: 15px;
+    width: 60%;
     margin-left: 15px;
     text-align: center;
     float: left;
+    float: right;
+    margin: 15px;
     background-color: lightgray;
 }
 
 #orderData {
-  width: 65%;
-    padding-left: 15px;
-    margin-left: 15px;
+    width: 60%;
     text-align: center;
     float: left;
     background-color: lightgray;
@@ -87,4 +98,7 @@ hr {
   color: lightgray;
 }
 
+#mainPageWrapper {
+ display: flex
+}
 </style>

@@ -1,13 +1,15 @@
 <template lang="html">
 <div id="orderDetail">
 
-<h4>{{order.takeaway}}</h4>
+<p>{{order.takeawayName}}</p>
 
 <p>{{order.time}} {{order. date}}</p>
 
 <p>Rating: {{order.rating}}</p>
 
 <p>{{order.on_time}}</p>
+
+<button type="button" name="button">Delete Order</button>
 
 </div>
 </template>
@@ -26,6 +28,7 @@ export default {
 #orderDetail {
   border: black 1px solid;
   width: 20%;
-  margin: 6px;
+  margin: 1%;
+  font-size: 12px;
 }
 </style>
